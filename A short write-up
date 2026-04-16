@@ -1,0 +1,118 @@
+Methodology
+Data preparation
+
+Loaded two datasets: (i) daily crypto Fear & Greed Index (fear_greed_index.csv), (ii) detailed trade history (historical_data.csv).
+
+Checked missing values and duplicates; both datasets had no NaNs and no duplicate rows.
+
+Parsed dates:
+
+Sentiment: date converted to datetime, classification renamed to sentiment.
+
+Trades: Timestamp IST parsed to datetime, and a date column extracted for daily aggregation.
+
+Feature engineering
+
+Trade-level flags:
+
+is_win = Closed PnL > 0
+
+is_long if Side ∈ {Long, Buy}, otherwise inferred as short.
+
+Daily per‑trader metrics via groupby(['date','Account']):
+
+daily_pnl (sum of Closed PnL)
+
+n_trades (count of trades)
+
+win_rate (mean of is_win)
+
+avg_trade_size (mean Size Tokens)
+
+avg_leverage (approximated using Size USD as a proxy for trade value)
+
+long_ratio (share of long trades).
+
+Daily market‑level metrics aggregated across traders per day: total PnL, average PnL per trade, total number of trades, average leverage, and long ratio.
+
+Sentiment merge & segmentation
+
+Merged daily trading metrics with the daily Fear & Greed sentiment by date.
+
+Sentiment distribution after merge: Greed (193 days), Extreme Greed (114), Fear (91), Neutral (67), Extreme Fear (14), with one NaN sentiment day.
+
+Built sentiment‑conditioned summaries of:
+
+Mean and median total daily PnL, mean PnL per trade, and number of days per sentiment bucket.
+
+Minimum cumulative PnL trajectory per sentiment class to assess drawdown behavior.
+
+Average trades/day, average leverage, and long ratio by sentiment.
+
+Further split days into high‑ vs low‑leverage segments (based on distribution of daily average Size USD) within each sentiment to study interaction between sentiment and leverage.
+
+Key Insights
+PnL vs sentiment
+
+Mean daily total PnL is highest in Extreme Fear (~52.8k) and Fear (~36.9k), while Greed shows the lowest mean (~11.1k).
+
+Median daily PnL confirms this skew: Extreme Fear has the highest typical day (~22.6k), Extreme Greed and Fear are clearly positive, and Greed days have relatively small median gains (~0.7k).
+
+Mean PnL per trade is also strong in Neutral (~63.8) and Extreme Greed (~56.7), suggesting that trade quality (profit per execution) is better when sentiment is balanced or very optimistic, while raw PnL volume is largest in fearful regimes.
+
+Risk and drawdowns
+
+The minimum cumulative PnL by sentiment bucket is worst for Fear (~256k) and Neutral (~252.6k), somewhat better for Extreme Fear (~265.9k) and Greed (~139.2k), and lowest for Extreme Greed (~102.4k). (Higher value = less severe drawdown, assuming cumulative PnL scale.)
+
+This suggests fearful and neutral regimes can host both very profitable and very stressful periods, while Extreme Greed tends to show smaller net drawdowns over the analyzed horizon.
+
+Volume, positioning, and leverage
+
+Average trades/day: highest under Extreme Fear (~1,529 trades/day), followed by Fear (~680) and Neutral (~562); Greed and Extreme Greed see far fewer trades (≈261 and 351).
+
+Average daily leverage proxy (Size USD) rises from Extreme Fear (~4.1k) to Extreme Greed (~4.4k) and peaks under Neutral (~7.2k), suggesting traders size up in more “comfortable” environments.
+
+Long/short balance (long ratio) is close to 0.5 across all sentiment buckets (≈0.46–0.51), indicating no strong bias toward longs or shorts purely from the Fear & Greed label.
+
+Leverage–sentiment interaction
+
+Within each sentiment bucket, high‑leverage days consistently have much higher mean daily PnL than low‑leverage days (e.g., under Extreme Fear, ~8.4k vs ~60; under Neutral, ~6.4k vs ~0.8k).
+
+However, high‑leverage days also tend to have higher win rates (≈0.35–0.39) but with fewer trades per day in some regimes, suggesting selective but aggressive risk‑taking is what drives the gains.
+
+Low‑leverage days show lower win rates (~0.27–0.38) and often more trades, implying more “grinding” with smaller edge.
+
+Strategy Recommendations
+Exploit fearful regimes with controlled aggression
+
+Since Extreme Fear and Fear days deliver the highest mean daily PnL, consider increasing exposure (position size/number of setups) during these periods, but constrain risk via hard max drawdown limits and per‑trade loss caps to handle the higher volatility suggested by drawdown stats.
+
+Avoid over‑trading in “Greed” conditions
+
+Greed days show the weakest profitability despite moderate leverage and activity.
+
+Implement rules that tighten entry criteria and reduce trade frequency when sentiment is “Greed” (but not Extreme), focusing only on high‑conviction setups and avoiding FOMO‑driven trades.
+
+Leverage sizing framework tied to sentiment
+
+Use a dynamic leverage schedule:
+
+Slightly higher allowable leverage and more capital allocation in Extreme Fear, Fear, and Neutral (where PnL per trade or total PnL is strongest).
+
+More conservative leverage caps in plain Greed and possibly in Extreme Greed when signals are noisy.
+
+Combine sentiment with volatility filters (e.g., realized vol or ATR) before scaling up positions to avoid oversized risk on exceptionally volatile days.
+
+Focus on trade quality, not only trade count
+
+PnL per trade is high in Neutral and Extreme Greed, suggesting quality over quantity performs best there.
+
+Add KPI monitoring of avg PnL per trade by sentiment regime, and enforce a rule to cut daily activity once average PnL per trade degrades below a threshold for that sentiment state.
+
+Portfolio/risk management overlay
+
+Use sentiment as a regime flag in your risk engine:
+
+Adjust daily loss limits, maximum open risk, and number of concurrent positions by sentiment bucket.
+
+Track performance of each trader (or strategy) by sentiment to specialize allocation to those who outperform in specific regimes (e.g., volatility hunters in Fear, mean‑reversion specialists in Neutral).
