@@ -1,37 +1,27 @@
 # Trader Performance vs. Market Sentiment Analysis
 
-A data-science project exploring whether market-sentiment indicators are associated with trader-performance measures.
+A data-science project exploring relationships between market-sentiment indicators and trader-performance measures.
 
-## Objective
-Bring sentiment and trading-related data into a documented analysis pipeline, investigate relationships, and evaluate whether any predictive signal remains under a realistic validation strategy.
+## Step-by-step workflow
 
-## Workflow Described
-- Data preparation and cleaning
-- Sentiment analysis
-- Calculation of trader-performance metrics
-- Model experiments using scikit-learn and XGBoost
-- Visual analysis with Matplotlib and Seaborn
-
-The README previously described scripts such as `data_preparation.py`, `sentiment_analysis.py`, `model_training.py`, `evaluation.py`, and `main.py`. Confirm these paths exist before running the commands below.
+1. Open `Trader_Performance_vs_Market_Sentiment_Analysis.ipynb` and read the data-loading cells.
+2. Review `Output table.csv` and the short write-up; identify source data, units, date ranges, and target variables.
+3. Check missing values, duplicates, time zones, and date alignment across sentiment and performance records.
+4. Define the analysis question and make sure features would have been available at the time of prediction.
+5. Perform EDA and visualize sentiment alongside performance measures.
+6. If modelling, use chronological splits and compare against simple baselines.
+7. Evaluate on a held-out time period and check for leakage or survivorship bias.
+8. Interpret results as associations unless the design supports stronger causal conclusions.
+9. Update the write-up with verified results and caveats.
 
 ## Tools
-Python, pandas, scikit-learn, XGBoost, and visualization/NLP libraries used by the implementation.
+Python, pandas, Jupyter Notebook, scikit-learn/XGBoost and visualization libraries where used.
 
-## How to Run
-1. Clone the repository and create a virtual environment.
-2. Install dependencies from `requirements.txt`, if present.
-3. Review the data source and any API or licensing requirements.
-4. Run the preparation, modelling, and evaluation steps documented in the actual source files.
+## Screenshots
+No image files were found in the repository root. Add charts under `images/` and embed them here.
 
-## Evaluation and Leakage Controls
-- Align sentiment observations with the correct trading time.
-- Avoid using information that was unavailable at prediction time.
-- Use chronological splits rather than random splits for time-dependent prediction.
-- Compare against simple baselines.
-- Report metrics and uncertainty on a held-out period.
-- Distinguish association from causation.
+## Limitations
+Market data is noisy; timing mismatches can create misleading results. This is educational research, not investment advice.
 
-## Recommended Improvements
-Document dataset provenance, exact target definitions, time alignment, model metrics, and a reproducible command sequence. Remove any unsupported claims about predictive performance.
-
-> This project is for educational research and is not investment advice.
+## Next improvements
+Document data provenance, time alignment, target definitions, baseline metrics, and reproducible setup.
