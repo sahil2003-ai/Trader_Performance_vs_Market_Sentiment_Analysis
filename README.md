@@ -2,7 +2,61 @@
 
 A data-science analysis exploring how daily trader performance metrics vary across Fear & Greed sentiment categories.
 
-## Repository contents
+![Status](https://img.shields.io/badge/Status-Documented-yellow)
+
+## 📌 Table of Contents
+
+- [Overview](#-overview)
+- [Problem Statement](#-problem-statement)
+- [Objectives](#-objectives)
+- [Features](#-features)
+- [Dataset](#-dataset)
+- [Tech Stack](#-tech-stack)
+- [Project Workflow](#-project-workflow)
+- [Repository Structure](#-repository-structure)
+- [Installation](#-installation)
+- [Usage](#-usage)
+- [Results and Insights](#-results-and-insights)
+- [Screenshots](#-screenshots)
+- [Challenges and Solutions](#-challenges-and-solutions)
+- [Limitations](#-limitations)
+- [Future Improvements](#-future-improvements)
+- [What I Learned](#-what-i-learned)
+- [Author](#-author)
+- [License](#-license)
+
+## 📖 Overview
+
+A data-science analysis exploring how daily trader performance metrics vary across Fear & Greed sentiment categories.
+
+## 🎯 Problem Statement
+
+The project addresses a data-analysis or modeling question using the dataset and implementation available in this repository. The aim is to produce transparent, reproducible evidence rather than unsupported performance claims.
+
+## 🎯 Objectives
+
+- Understand the data and define the target or business question.
+- Document data preparation, feature engineering, and analysis/modeling steps.
+- Report available metrics with their evidence and validation status.
+- Make the workflow reproducible and explain limitations.
+
+## ✨ Features
+
+The project features are documented in the notebooks, scripts, and outputs. See the source files for the precise implementation.
+
+## 📂 Dataset
+
+Document the exact source, dimensions, fields, target definition, missing values, and license from the repository's actual data files.
+
+## 🛠️ Tech Stack
+
+List only the libraries and tools directly evidenced in source files and dependency manifests.
+
+## 🔄 Project Workflow
+
+1. Load and validate the data.\n2. Inspect data quality and target definitions.\n3. Run analysis or train models.\n4. Evaluate results using an appropriate validation strategy.\n5. Document findings and limitations.
+
+## 🗂️ Repository Structure
 
 | File | Purpose |
 |---|---|
@@ -11,13 +65,25 @@ A data-science analysis exploring how daily trader performance metrics vary acro
 | `A short write-up` | Methodology and descriptive interpretation |
 | `LICENSE` | Repository license |
 
-## Data processing described in the project
+## ⚙️ Installation
 
-The methodology document describes merging daily market Fear & Greed sentiment with aggregated trade outcomes. It calculates daily PnL, number of trades, win rate, average trade size, an average-leverage proxy based on `Size USD`, and long ratio by sentiment category.
+1. Confirm paths and provenance for the underlying sentiment and trade datasets.
+2. Parse timestamps and time zones consistently.
+3. Validate merge coverage and resolve the cleaning-log discrepancy.
+4. Check missing values and duplicate keys at the intended data grain.
+5. Recreate sentiment-level summaries and compare with the saved CSV.
+6. If modeling, define the target, use time-aware validation, compare a baseline, and report per-class metrics.
 
-Saved notebook output reports 2,644 sentiment records × 4 fields and 211,224 trade records × 16 fields at initial loading. The notebook's cleaning log is inconsistent: it reports 65,149 rows before cleaning and later 211,224 after `dropna()`. Reconcile this discrepancy and the join logic before treating the analysis as fully validated.
+## ▶️ Usage
 
-## Descriptive results from the saved CSV summary
+1. Confirm paths and provenance for the underlying sentiment and trade datasets.
+2. Parse timestamps and time zones consistently.
+3. Validate merge coverage and resolve the cleaning-log discrepancy.
+4. Check missing values and duplicate keys at the intended data grain.
+5. Recreate sentiment-level summaries and compare with the saved CSV.
+6. If modeling, define the target, use time-aware validation, compare a baseline, and report per-class metrics.
+
+## 📊 Results and Insights
 
 | Sentiment | Mean daily PnL | Median daily PnL | Mean PnL/trade | Days | Mean trades/day | Long ratio |
 |---|---:|---:|---:|---:|---:|---:|
@@ -29,32 +95,45 @@ Saved notebook output reports 2,644 sentiment records × 4 fields and 211,224 tr
 
 PnL units/currency are not specified in the available outputs. The table reports associations across the merged sample; it does not mean sentiment caused the differences or that a sentiment-based trading strategy will be profitable.
 
-## Saved model output
+## 🖼️ Screenshots
 
-The previous README records a Random Forest result of **80.77% accuracy** and **0.8515 F1-score** on a report containing 468 test examples. These are saved notebook results, not independently reproduced in this review. Before presenting them as validated performance, verify the exact prediction target, class balance, split strategy, date alignment, and that predictors are available before the outcome.
+Add genuine charts or app screenshots stored in the repository. Do not use mock screenshots or claim that a file exists unless verified.
 
-The saved feature-importance output lists `long_ratio` (0.4237), `n_trades` (0.2073), `avg_leverage` (0.1654), and `avg_trade_size` (0.1557). Importance indicates model reliance, not causal impact.
+## 🧩 Challenges and Solutions
 
-## Reproduce and validate
+| Challenge | Solution |
+|---|---|
+| Saved outputs may not match current data or dependencies | Rerun the workflow and compare fresh outputs. |
+| High model scores can be caused by leakage or an unsuitable split | Validate feature timing, target construction, split strategy, and baseline. |
+| Results may be hard to reproduce | Document package versions, input paths, and random seeds where applicable. |
 
-1. Confirm paths and provenance for the underlying sentiment and trade datasets.
-2. Parse timestamps and time zones consistently.
-3. Validate merge coverage and resolve the cleaning-log discrepancy.
-4. Check missing values and duplicate keys at the intended data grain.
-5. Recreate sentiment-level summaries and compare with the saved CSV.
-6. If modeling, define the target, use time-aware validation, compare a baseline, and report per-class metrics.
-
-## Limitations
+## ⚠️ Limitations
 
 - Data cleaning and row-count notes are inconsistent and need reconciliation.
 - The reported model metrics were not independently reproduced.
 - Account addresses and transaction hashes can identify accounts; avoid exposing them in screenshots or reports.
 - Correlation and grouped PnL differences do not establish causality or a reliable trading strategy.
 
-## Skills demonstrated
+## 🚀 Future Improvements
 
-Python, pandas, time-series alignment, groupby aggregation, exploratory analysis, model evaluation, and responsible interpretation of financial data.
+- [ ] Rerun the pipeline and verify all saved metrics.
+- [ ] Document dataset provenance and data dictionary.
+- [ ] Add genuine output screenshots and a reproducible model comparison.
 
-## Author
+## 📚 What I Learned
 
-Sahil Gaikwad · [GitHub](https://github.com/sahil2003-ai) · [LinkedIn](https://www.linkedin.com/in/sahil-gaikwad-a76b7224a/)
+- Building a reproducible data science workflow.
+- Choosing and interpreting task-appropriate evaluation metrics.
+- Separating descriptive associations from causal claims.
+- Documenting model limitations alongside results.
+
+## 👤 Author
+
+**Sahil Gaikwad**
+
+- GitHub: [sahil2003-ai](https://github.com/sahil2003-ai)
+- LinkedIn: [Sahil Gaikwad](https://www.linkedin.com/in/sahil-gaikwad-a76b7224a/)
+
+## 📄 License
+
+Confirm the repository license and dataset reuse terms before redistribution.
