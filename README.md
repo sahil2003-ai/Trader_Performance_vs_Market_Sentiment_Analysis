@@ -47,10 +47,12 @@ Combining sentiment with trading outcomes requires careful time alignment and va
 
 ## 📂 Dataset
 
-Output table.csv and the notebook are present. Confirm the original source, time range, units, and construction of the output table.
+Saved notebook output reports **2,644 sentiment records × 4 fields** and **211,224 trade records × 16 fields** at the initial load.
 
-- **Privacy and licensing:** Check source terms and avoid publishing personal, sensitive, or restricted data.
-- **Preprocessing:** Follow the actual SQL/notebook/report implementation; do not assume cleaning steps or row counts that have not been verified.
+- **Sentiment fields:** timestamp, value, classification, date.
+- **Trade fields include:** account, coin, execution price, size, side, timestamp, closed PnL, fees, and trade identifiers.
+- **Data quality warning:** A notebook message says “Rows before cleaning: 65149” but later reports 211,224 rows after `dropna()`. This inconsistency must be corrected before claiming cleaning improved the dataset.
+- **Privacy:** Account addresses and transaction hashes appear in trade data; avoid publishing them in screenshots or examples.
 
 ## 🛠️ Tech Stack
 
@@ -103,13 +105,18 @@ Run the notebook from top to bottom after confirming data paths. Read the short 
 
 ## 📊 Results and Insights
 
-### Key Findings
+### Saved notebook model evaluation
 
-Add reproducible results and metrics only after verifying the notebook and output table.
+| Metric | Saved result |
+|---|---:|
+| Best model | Random Forest |
+| Accuracy | 0.8077 (80.77%) |
+| F1-score | 0.8515 |
+| Test examples in classification report | 468 |
 
-### Evaluation
+Saved feature importance was led by `long_ratio` (0.4237), `n_trades` (0.2073), `avg_leverage` (0.1654), and `avg_trade_size` (0.1557). These are model associations, not causal effects.
 
-For analytics projects, reconcile key totals and document metric definitions. For ML projects, report the baseline, split strategy, relevant metrics, and held-out evaluation results. Do not include unverified scores or business impact claims.
+The provided `Output table.csv` summarizes PnL statistics by sentiment category. Descriptive differences do not establish that sentiment caused trading performance. Metrics above are saved notebook outputs, not independently reproduced results; verify joins, target definition, and the inconsistent cleaning log before using them as final claims.
 
 ## 🖼️ Screenshots
 
@@ -123,9 +130,10 @@ No image files were confirmed for this repository during this update. If you hav
 
 ## ⚠️ Limitations
 
-- Market data is noisy and associations do not prove causation.
-- This is educational analysis, not investment advice.
-- No screenshots were found in the repository.
+- The notebook cleaning log is inconsistent (65,149 before cleaning vs. 211,224 after); resolve this before publication.
+- Model metrics are saved notebook outputs and were not independently reproduced.
+- Account addresses and transaction hashes may be sensitive identifiers.
+- Sentiment/performance associations do not prove causation or establish a profitable trading strategy.
 
 ## 🚀 Future Improvements
 
